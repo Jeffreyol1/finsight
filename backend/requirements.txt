@@ -1,0 +1,16 @@
+# Phase 0 — minimal, runs the end-to-end path with no external services.
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+httpx==0.28.1
+
+# Dev / test
+pytest==8.3.4
+
+# --- added in later phases (left here as a roadmap) ---
+# psycopg[binary]==3.2.3          # Phase 1: Postgres driver
+# pgvector==0.3.6                 # Phase 1: vector column type
+# sentence-transformers==3.3.1    # Phase 2: embeddings + cross-encoder re-ranker
+# rank-bm25==0.2.2                # Phase 2: keyword search
+# anthropic / openai              # Phase 4: real LLM providers
