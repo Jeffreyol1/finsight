@@ -2,7 +2,7 @@
 
 Generated from the Postman collection. One row per request.
 
-**Total cases:** 235
+**Total cases:** 250
 
 
 ## 00 Health
@@ -22,13 +22,28 @@ Generated from the Postman collection. One row per request.
 | NAME-002 | Only required name parts (first + last) | P1 | Positive | 200, valid=true; middleName, title and suffix are null. |  |
 | NAME-003 | userId is optional on this endpoint | P3 | Positive | 200, valid=true and userId echoed as null. |  |
 | NAME-004 | Whitespace is trimmed and collapsed; all-caps / all-lower is re-cased | P2 | Normalization | First name `Mary Ann`, last name `Smith`. |  |
-| NAME-005 | Caps-lock inverted input is re-cased | P2 | Normalization | `jANE dOE` becomes `Jane Doe`. |  |
+| NAME-005 | Caps-lock inverted input is re-cased | P2 | Normalization | `mICHAEL tHOMPSON` becomes `Michael Thompson`. |  |
 | NAME-006 | Intentional mixed casing is preserved | P2 | Normalization | `DeShawn McDonald` is returned exactly as entered. |  |
 | NAME-007 | Hyphen and typographic apostrophe are accepted and normalised | P2 | Normalization | Curly apostrophe folded to `'`; last name re-cased to `O'Brien-Smith`. |  |
 | NAME-008 | Accented / international letters are accepted | P2 | Positive | 200, valid=true, accents preserved. |  |
 | NAME-009 | Title and suffix are case-insensitive and lose a trailing period | P2 | Normalization | Title `Mrs`; suffix accepted (returned as `Iii` - see QA note). |  |
-| NAME-010 | Every allowed title is accepted | P3 | Positive | 200, valid=true for a random title from MR, MS, MRS, DR, PROF, SIR, MADAM, MISS. |  |
-| NAME-011 | Every allowed suffix is accepted | P3 | Positive | 200, valid=true for a random suffix from JR, SR, II, III, IV, V, ESQ, PHD, MD. |  |
+| NAME-010A | Allowed title `Mr` is accepted | P3 | Positive | 200, valid=true, normalized.title `Mr`. |  |
+| NAME-010B | Allowed title `Ms` is accepted | P3 | Positive | 200, valid=true, normalized.title `Ms`. |  |
+| NAME-010C | Allowed title `Mrs` is accepted | P3 | Positive | 200, valid=true, normalized.title `Mrs`. |  |
+| NAME-010D | Allowed title `Dr` is accepted | P3 | Positive | 200, valid=true, normalized.title `Dr`. |  |
+| NAME-010E | Allowed title `Prof` is accepted | P3 | Positive | 200, valid=true, normalized.title `Prof`. |  |
+| NAME-010F | Allowed title `Sir` is accepted | P3 | Positive | 200, valid=true, normalized.title `Sir`. |  |
+| NAME-010G | Allowed title `Madam` is accepted | P3 | Positive | 200, valid=true, normalized.title `Madam`. |  |
+| NAME-010H | Allowed title `Miss` is accepted | P3 | Positive | 200, valid=true, normalized.title `Miss`. |  |
+| NAME-011A | Allowed suffix `Jr` is accepted | P3 | Positive | 200, valid=true, suffix `Jr` accepted. |  |
+| NAME-011B | Allowed suffix `Sr` is accepted | P3 | Positive | 200, valid=true, suffix `Sr` accepted. |  |
+| NAME-011C | Allowed suffix `II` is accepted | P3 | Positive | 200, valid=true, suffix `II` accepted. |  |
+| NAME-011D | Allowed suffix `III` is accepted | P3 | Positive | 200, valid=true, suffix `III` accepted. |  |
+| NAME-011E | Allowed suffix `IV` is accepted | P3 | Positive | 200, valid=true, suffix `IV` accepted. |  |
+| NAME-011F | Allowed suffix `V` is accepted | P3 | Positive | 200, valid=true, suffix `V` accepted. |  |
+| NAME-011G | Allowed suffix `Esq` is accepted | P3 | Positive | 200, valid=true, suffix `Esq` accepted. |  |
+| NAME-011H | Allowed suffix `PhD` is accepted | P3 | Positive | 200, valid=true, suffix `PhD` accepted. |  |
+| NAME-011I | Allowed suffix `MD` is accepted | P3 | Positive | 200, valid=true, suffix `MD` accepted. |  |
 | NAME-012 | Single-character first name is a warning, not a rejection | P2 | Warning | 200, valid=true, warningCodes=[SINGLE_CHARACTER_NAME]. |  |
 | NAME-013 | Single-character middle initial is a warning | P2 | Warning | 200, valid=true, warningCodes=[SINGLE_CHARACTER_NAME], middle name `A`. |  |
 | NAME-014 | Blank optional fields are treated as not provided | P3 | Positive | 200, valid=true; middleName, title and suffix null. |  |
@@ -55,7 +70,7 @@ Generated from the Postman collection. One row per request.
 | ID | Title | Priority | Type | Expected result | Reference data |
 |---|---|---|---|---|---|
 | EMAIL-001 | Valid email address | P1 | Positive | 200, syntaxValid=true, message `Email is valid`, no warning codes. |  |
-| EMAIL-002 | Email is trimmed and lower-cased | P1 | Normalization | normalizedEmail `jane.doe@acme.org`. |  |
+| EMAIL-002 | Email is trimmed and lower-cased | P1 | Normalization | normalizedEmail `michael.thompson@gmail.com`. |  |
 | EMAIL-003 | Plus-addressing and allowed special characters | P2 | Positive | 200, syntaxValid=true. |  |
 | EMAIL-004 | Sub-domains and hyphenated domain labels | P2 | Positive | 200, syntaxValid=true. |  |
 | EMAIL-005 | Boundary: exactly 60 characters is accepted | P1 | Boundary | 200, syntaxValid=true (max length is 60). |  |
@@ -172,11 +187,11 @@ Generated from the Postman collection. One row per request.
 |---|---|---|---|---|---|
 | PROF-001 | Clean profile is accepted and normalised | P1 | Positive | 200, decision ACCEPT, no errors or warnings, every contact and address isValidated=true. |  |
 | PROF-002 | Minimal profile (name + one email) | P1 | Positive | 200, ACCEPT; userId null, addresses and phones empty lists. |  |
-| PROF-003 | Phone is enough as the only contact method | P1 | Positive | 200, ACCEPT with phones[0].isValidated=true. |  |
+| PROF-003 | Phone is enough as the only contact method | P1 | Positive | 200, ACCEPT with phones[0] `3128462290` and isValidated=true. |  |
 | PROF-004 | Legacy field names (RequestID, UserID, email, phone) are accepted | P1 | Contract | 200, ACCEPT; requestId and userId echoed; emails/phones validated. |  |
 | PROF-005 | Numeric RequestId is echoed back as text | P2 | Contract | 200 and requestId returned as a string equal to the number sent. |  |
-| PROF-006 | Input is trimmed, re-cased and normalised | P1 | Normalization | Name `Jane Marie Doe`, email lower-cased, phone `7134829156`, type and sourceSystem/brand trimmed. |  |
-| PROF-007 | International phone keeps a leading + | P2 | Positive | 200, ACCEPT, phones[0].value `+442079460958`, isValidated=true. |  |
+| PROF-006 | Input is trimmed, re-cased and normalised | P1 | Normalization | Name `Michael James Thompson`, email lower-cased, phone `7134829156`, type and sourceSystem/brand trimmed. |  |
+| PROF-007 | International phone keeps a leading + | P2 | Positive | 200, ACCEPT, phones[0].value `+442079460958`, address country `GB`. |  |
 | PROF-008 | Boundary: 4 addresses, 4 emails and 4 phones are accepted | P1 | Boundary | 200, ACCEPT with 4 normalised entries in each list. |  |
 | PROF-009 | Client-supplied isValidated is ignored and recomputed | P1 | Business rule | emails[0].isValidated=true even though false was sent; phones[0].isValidated=false even though true was sent. |  |
 | PROF-010 | Single-character middle initial is accepted without a warning | P2 | Positive | 200, ACCEPT, no warnings. |  |
@@ -195,7 +210,7 @@ Generated from the Postman collection. One row per request.
 | PROF-030 | Incomplete address lists every missing part | P2 | Warning | ADDRESS_INCOMPLETE `Postal code is missing. City is missing.` |  |
 | PROF-031 | Customer address equal to storeContext.storeAddress (with a suite number) | P1 | Warning | ADDRESS_MATCHES_STORE `Customer address matches the transacting store address.`; isValidated=false. |  |
 | PROF-032 | Missing country is inferred as US from the state | P2 | Business rule | ACCEPT; normalised country `US`, state `TX`. |  |
-| PROF-033 | Missing country is inferred as CA from the province | P2 | Business rule | ACCEPT; country `CA`, state `ON`, postalCode `M5H 2N2`. |  |
+| PROF-033 | Missing country is inferred as CA from the province | P2 | Business rule | ACCEPT; country `CA`, state `ON`, postalCode `M4R 1P6`. |  |
 | PROF-034 | Missing country and state are inferred from the ZIP | P3 | Business rule | ACCEPT_WITH_WARNINGS; country `US`, ADDRESS_INCOMPLETE `State is missing.` |  |
 | PROF-050 | Digits in last name reject the profile | P1 | Negative | REJECT, NAME_NUMERIC_CHARACTERS on profile.lastName. |  |
 | PROF-051 | Special characters in first name reject the profile | P1 | Negative | REJECT, NAME_NUMERIC_CHARACTERS on profile.firstName. |  |
@@ -247,24 +262,24 @@ Generated from the Postman collection. One row per request.
 
 | ID | Title | Priority | Type | Expected result | Reference data |
 |---|---|---|---|---|---|
-| REF-001 | Name equal to a store name is rejected | P2 | Reference data | 422, storeName=true, warningCodes include STORE_NAME. | refStoreName |
-| REF-002 | Name equal to a denylisted organisation name is rejected | P2 | Reference data | 422, warningCodes include BUSINESS_NAME. | refOrgName |
-| REF-003 | Denylisted email prefix is flagged (but syntaxValid stays true) | P2 | Reference data | 200, syntaxValid=true, message `Email is valid`, warningCodes include DENYLISTED_EMAIL. | refEmailPrefix |
-| REF-004 | Denylisted email domain is flagged | P2 | Reference data | 200, syntaxValid=true, warningCodes include DENYLISTED_DOMAIN. | refEmailDomain |
-| REF-005 | Phone matching a store phone | P2 | Reference data | 200, storePhone=true, warningCodes include STORE_PHONE_MATCH. | refStorePhone |
-| REF-006 | Phone starting with a denylisted prefix | P2 | Reference data | 200, warningCodes include DENYLIST_MATCH. | refPhonePrefix |
-| REF-007 | Address equal to a store-master address is a crossover | P2 | Reference data | valid=false, errorCodes include ADDRESS_STORE_CROSSOVER, storeAddressMatch=true, matchedStoreId set. | refStoreLine1, refStoreCity, refStoreState, refStorePostalCode |
-| REF-008 | Store-master address with a suite number still matches | P2 | Reference data | ADDRESS_STORE_CROSSOVER (unit designators are ignored when matching). | refStoreLine1, refStoreCity, refStoreState, refStorePostalCode |
-| REF-009 | Denylisted street address | P2 | Reference data | valid=false, syntaxValid=true, errorCodes include DENYLISTED_ADDRESS. | refAddressLine1 |
-| REF-010 | Denylisted ZIP code | P2 | Reference data | valid=false, errorCodes include DENYLISTED_ZIP_CODE. | refZipCode |
-| REF-011 | Profile: placeholder email is rejected | P2 | Reference data | REJECT: EMAIL_PLACEHOLDER and CONTACT_METHOD_NOT_VALIDATED. | refEmailPrefix |
-| REF-012 | Profile: denylisted email domain is rejected | P2 | Reference data | REJECT: EMAIL_PLACEHOLDER on emails[0].value. | refEmailDomain |
-| REF-013 | Profile: denylisted phone prefix is rejected | P2 | Reference data | REJECT: PHONE_DENYLISTED on phones[0].value. | refPhonePrefix |
-| REF-014 | Profile: denylisted street address is rejected | P2 | Reference data | REJECT: ADDRESS_DENYLISTED on addresses[0].line1. | refAddressLine1 |
-| REF-015 | Profile: denylisted ZIP code is rejected | P2 | Reference data | REJECT: ADDRESS_DENYLISTED on addresses[0].postalCode. | refZipCode |
-| REF-016 | Profile: store-master address is a warning | P2 | Reference data | ACCEPT_WITH_WARNINGS: ADDRESS_MATCHES_STORE `Customer address matches store <id> address.` | refStoreLine1, refStoreCity, refStoreState, refStorePostalCode |
-| REF-017 | Profile: store-master phone is a warning | P2 | Reference data | ACCEPT_WITH_WARNINGS: PHONE_MATCHES_STORE; phones[0].isValidated=false. | refStorePhone |
-| REF-018 | Profile: name equal to a store name is a warning | P2 | Reference data | NAME_BUSINESS_OR_STORE warning on profile.firstName. | refStoreName |
+| REF-001 | Name equal to a store name is rejected | P2 | Reference data | 422, storeName=true, warningCodes include STORE_NAME. | Yes |
+| REF-002 | Name equal to a denylisted organisation name is rejected | P2 | Reference data | 422, warningCodes include BUSINESS_NAME. | Yes |
+| REF-003 | Denylisted email prefix is flagged (but syntaxValid stays true) | P2 | Reference data | 200, syntaxValid=true, message `Email is valid`, warningCodes include DENYLISTED_EMAIL. | Yes |
+| REF-004 | Denylisted email domain is flagged | P2 | Reference data | 200, syntaxValid=true, warningCodes include DENYLISTED_DOMAIN. | Yes |
+| REF-005 | Phone matching a store phone | P2 | Reference data | 200, storePhone=true, warningCodes include STORE_PHONE_MATCH. | Yes |
+| REF-006 | Phone starting with a denylisted prefix | P2 | Reference data | 200, warningCodes include DENYLIST_MATCH. | Yes |
+| REF-007 | Address equal to a store-master address is a crossover | P2 | Reference data | valid=false, errorCodes include ADDRESS_STORE_CROSSOVER, storeAddressMatch=true, matchedStoreId set. | Yes |
+| REF-008 | Store-master address with a suite number still matches | P2 | Reference data | ADDRESS_STORE_CROSSOVER (unit designators are ignored when matching). | Yes |
+| REF-009 | Denylisted street address | P2 | Reference data | valid=false, syntaxValid=true, errorCodes include DENYLISTED_ADDRESS. | Yes |
+| REF-010 | Denylisted ZIP code | P2 | Reference data | valid=false, errorCodes include DENYLISTED_ZIP_CODE. | Yes |
+| REF-011 | Profile: placeholder email is rejected | P2 | Reference data | REJECT: EMAIL_PLACEHOLDER and CONTACT_METHOD_NOT_VALIDATED. | Yes |
+| REF-012 | Profile: denylisted email domain is rejected | P2 | Reference data | REJECT: EMAIL_PLACEHOLDER on emails[0].value. | Yes |
+| REF-013 | Profile: denylisted phone prefix is rejected | P2 | Reference data | REJECT: PHONE_DENYLISTED on phones[0].value. | Yes |
+| REF-014 | Profile: denylisted street address is rejected | P2 | Reference data | REJECT: ADDRESS_DENYLISTED on addresses[0].line1. | Yes |
+| REF-015 | Profile: denylisted ZIP code is rejected | P2 | Reference data | REJECT: ADDRESS_DENYLISTED on addresses[0].postalCode. | Yes |
+| REF-016 | Profile: store-master address is a warning | P2 | Reference data | ACCEPT_WITH_WARNINGS: ADDRESS_MATCHES_STORE `Customer address matches store <id> address.` | Yes |
+| REF-017 | Profile: store-master phone is a warning | P2 | Reference data | ACCEPT_WITH_WARNINGS: PHONE_MATCHES_STORE; phones[0].isValidated=false. | Yes |
+| REF-018 | Profile: name equal to a store name is a warning | P2 | Reference data | NAME_BUSINESS_OR_STORE warning on profile.firstName. | Yes |
 
 ## 07 Security & Resilience
 
